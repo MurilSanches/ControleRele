@@ -52,7 +52,7 @@ void setup() {
 
 void loop() {
   //cria um cliente
-  WiFiEspClient client = server.available();
+  WiFiEspClient client = server.available(); 
   
   // checa se o cliente esta no servidor e
   // inicializa o leitor de resposta
@@ -61,7 +61,7 @@ void loop() {
     Serial.println("Novo cliente");
     buf.init();
     // enquanto o cliente esta conectado, 
-    //cada resposta que o cliente passar sera lida
+    // cada resposta que o cliente passar sera lida
     while (client.connected())
     {
       if (client.available())
@@ -81,7 +81,7 @@ void loop() {
         // liga o rele
         if (buf.endsWith("GET /LG?"))
         {
-          digitalWrite(pinRele, LOW);
+          digitalWrite(pinRele, LOW); // acende o led
           buf.reset();
           Serial.println(" Ligado");
         }
@@ -89,7 +89,7 @@ void loop() {
         // desliga o rele
         if (buf.endsWith("GET /DL?"))
         {
-          digitalWrite(pinRele, HIGH);
+          digitalWrite(pinRele, HIGH); // apaga o led
           buf.reset();
           Serial.println("deligado");
         }     
@@ -124,8 +124,6 @@ void sendHttpResponse(WiFiEspClient client) {
     "Connection: close\r\n"  // a conexão será fechada depois de concluir
     "Refresh: 20\r\n"        // a pagina ira atualizar automaticamente a cada 20 sec
     "\r\n");
-  client.println("Content-type:text/html\r \n");
-  client.println("Connection: close\r \n");
   client.println("\r \n");
   client.println("\r \n");
   client.println("<!DOCTYPE HTML><html>\r \n");
