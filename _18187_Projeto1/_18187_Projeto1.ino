@@ -111,7 +111,8 @@ void sendHttpResponse(WiFiEspClient client) {
   client.println("HTTP/1.1 200 OK");
   client.println("Content-type:text/html");
   client.println("Connection: close");
-  client.println();
+  client.println("\r \n");
+  client.println("\r \n");
   client.println("<!DOCTYPE HTML><html>");
   client.println("<head><title>Ligar rele");
   client.println("</title></head>");
