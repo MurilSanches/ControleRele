@@ -10,7 +10,7 @@
 //definindo uma porta serial virtual
 SoftwareSerial Serial1(8,9);
 
-//definindo o nome, senha da rede e crinado
+//definindo o nome, senha da rede e criando
 //uma variavel para o estado da rede
 char ssid[] = "TSE_MURILO";
 char pass[] = "00018187";
@@ -21,14 +21,15 @@ WiFiEspServer server(80);
 RingBuffer buf(8);
 
 void setup() {
-  // inicializa os pinos e portas, desliga o rele.
-  pinMode(pinRele,OUTPUT);
-  digitalWrite(pinRele,HIGH);  
+  // inicializa os pinos, desliga o rele.
+  pinMode(pinRele, OUTPUT);
+  digitalWrite(pinRele, HIGH);  
   
+  // inicializa as portas
   Serial.begin(115200);  // porta de debug
   Serial1.begin(9600);
   
-  // inicializa o mudolo wifi
+  // inicializa o modolo wifi
   WiFi.init(&Serial1);
    
   //checa se o modulo esta conectado
@@ -36,7 +37,6 @@ void setup() {
     Serial.println("Sem modulo");
     while(true);  //trava a execução 
   }
- 
 
  // IPAddress localIp(192, 168, 1203, 1);
  // WiFi.configAP(localIp);
@@ -54,7 +54,7 @@ void loop() {
   //cria um cliente
   WiFiEspClient client = server.available();
   
-  //checa se o cliente esta no servidor e
+  // checa se o cliente esta no servidor e
   // inicializa o leitor de resposta
   if (client)
   {
@@ -62,31 +62,37 @@ void loop() {
     buf.init();
     // enquanto o cliente esta conectado, 
     //cada resposta que o cliente passar sera lida
-    while (client.connected()){
-      if (client.available()){
+    while (client.connected())
+    {
+      if (client.available())
+      {
         char c = client.read();
         buf.push(c);
         Serial.print(c);
         //reação para cada resposta do servidor
         //desconecta o cliente
-        if (buf.endsWith("\r\n\r\n")){
+        
+        if (buf.endsWith("\r\n\r\n"))
+        {
           sendHttpResponse(client);
           break;
         }
+        
         // liga o rele
-        if (buf.endsWith("GET /LG?")){
+        if (buf.endsWith("GET /LG?"))
+        {
           digitalWrite(pinRele, LOW);
           buf.reset();
           Serial.println(" Ligado");
         }
+        
         // desliga o rele
-        if (buf.endsWith("GET /DL?")){
+        if (buf.endsWith("GET /DL?"))
+        {
           digitalWrite(pinRele, HIGH);
           buf.reset();
           Serial.println("deligado");
-        }
-        
-        
+        }     
       }
     } // while
     client.stop();
@@ -95,6 +101,8 @@ void loop() {
 }
 
 void printWifiStatus(){
+  // printa o status do wifi, como também o ip e a porta
+  
   IPAddress ip = WiFi.localIP();
   Serial.print("IP address ");
   Serial.println(ip);
@@ -108,18 +116,25 @@ void printWifiStatus(){
 
 
 void sendHttpResponse(WiFiEspClient client) {
-  client.println("HTTP/1.1 200 OK");
-  client.println("Content-type:text/html");
-  client.println("Connection: close");
+  // pagina web
+  
+  client.print(
+    "HTTP/1.1 200 OK\r\n"
+    "Content-Type: text/html\r\n"
+    "Connection: close\r\n"  // a conexão será fechada depois de concluir
+    "Refresh: 20\r\n"        // a pagina ira atualizar automaticamente a cada 20 sec
+    "\r\n");
+  client.println("Content-type:text/html\r \n");
+  client.println("Connection: close\r \n");
   client.println("\r \n");
   client.println("\r \n");
-  client.println("<!DOCTYPE HTML><html>");
+  client.println("<!DOCTYPE HTML><html>\r \n");
   client.println("<head><title>Ligar rele");
-  client.println("</title></head>");
-  client.println("<body> <br><br><center>");
-  client.println("<H1> LIGANDO RELE</H1>");
-  client.println("<form action=\"LG\" method=\"get\"><button type='submit'>Ligar</button></form><form action=\"DL\" method=\"get\"><button type='submit'>Desligar</button></form>");
-  client.println("</center></body></html>");
+  client.println("</title></head>\r \n");
+  client.println("<body> <br><br><center>\r \n");
+  client.println("<H1> LIGANDO RELE</H1>\r \n");
+  client.println("<form action=\"LG\" method=\"get\"><button type='submit'>Ligar</button></form><form action=\"DL\" method=\"get\"><button type='submit'>Desligar</button></form>\r \n");
+  client.println("</center></body></html>\r \n");
   client.println();
   
 }
