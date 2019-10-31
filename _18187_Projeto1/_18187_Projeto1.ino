@@ -41,11 +41,13 @@ void setup() {
  // IPAddress localIp(192, 168, 1203, 1);
  // WiFi.configAP(localIp);
 
+  // inicia o ponto de acesso
   status = WiFi.beginAP(ssid, 10, pass, ENC_TYPE_WPA2_PSK);
 
   Serial.println("Access point started");
   printWifiStatus(); 
   
+  // inicia o web service na porta 80 
   server.begin();
   Serial.println("Server started");
 }
@@ -67,6 +69,7 @@ void loop() {
       if (client.available())
       {
         char c = client.read();
+        
         buf.push(c);
         Serial.print(c);
         //reação para cada resposta do servidor
@@ -79,22 +82,24 @@ void loop() {
         }
         
         // liga o rele
-        if (buf.endsWith("GET /LG?"))
+        if (buf.endsWith("GET /LG?")) // se o parametro da requisição vindo do get for igual a "LG", faz
         {
           digitalWrite(pinRele, LOW); // acende o led
           buf.reset();
-          Serial.println(" Ligado");
+          Serial.println(" Ligado"); // printa que o rele esta ligado
         }
         
         // desliga o rele
-        if (buf.endsWith("GET /DL?"))
+        if (buf.endsWith("GET /DL?")) // se o parametro da requisição vindo do get for igual a "DL", faz
         {
-          digitalWrite(pinRele, HIGH); // apaga o led
+          digitalWrite(pinRele, HIGH); // apaga o led 
           buf.reset();
-          Serial.println("deligado");
+          Serial.println("deligado"); // printa que o rele esta desligado
         }     
       }
     } // while
+    
+     // fecha a conexao
     client.stop();
     Serial.println("Desconectado");
   }
@@ -105,12 +110,12 @@ void printWifiStatus(){
   
   IPAddress ip = WiFi.localIP();
   Serial.print("IP address ");
-  Serial.println(ip);
+  Serial.println(ip); // printa o ip
 
   Serial.print("To see this page in action, connect to ");
-  Serial.print(ssid);
+  Serial.print(ssid); 
   Serial.print(" and open a browser to http://");
-  Serial.print(ip);
+  Serial.print(ip); 
   Serial.println();
 }
 
