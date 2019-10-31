@@ -131,7 +131,7 @@ void sendHttpResponse(WiFiEspClient client) {
   client.println("</title></head>\r \n");
   client.println("<body> <br><br><center>\r \n");
   client.println("<H1> LIGANDO RELE</H1>\r \n");
-  client.println("<form action=\"LG\" method=\"get\"><button type='submit'>Ligar</button></form><form action=\"DL\" method=\"get\"><button type='submit'>Desligar</button></form>\r \n");
+  client.println("<form action=\"LG\" method=\"get\"><button style='background-color: green; border-color: green; color:  white' type='submit'>Ligar</button></form><br /><form action=\"DL\" method=\"get\"><button type='submit' style='background-color: red; border-color: red; color: white'>Desligar</button></form>\r \n");
   client.println("</center></body></html>\r \n");
   client.println();
   
