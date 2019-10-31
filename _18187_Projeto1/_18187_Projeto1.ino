@@ -123,7 +123,7 @@ void sendHttpResponse(WiFiEspClient client) {
     "Content-Type: text/html\r\n"
     "Connection: close\r\n"  // a conexão será fechada depois de concluir
     "Refresh: 20\r\n"        // a pagina ira atualizar automaticamente a cada 20 sec
-    "\r\n"
+    "\r \n"
     "\r \n"
     "\r \n"
     "<!DOCTYPE HTML><html>\r \n"
