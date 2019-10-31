@@ -118,21 +118,21 @@ void printWifiStatus(){
 void sendHttpResponse(WiFiEspClient client) {
   // pagina web
   
-  client.print(
+  client.println(F(
     "HTTP/1.1 200 OK\r\n"
     "Content-Type: text/html\r\n"
     "Connection: close\r\n"  // a conexão será fechada depois de concluir
     "Refresh: 20\r\n"        // a pagina ira atualizar automaticamente a cada 20 sec
-    "\r\n");
-  client.println("\r \n");
-  client.println("\r \n");
-  client.println("<!DOCTYPE HTML><html>\r \n");
-  client.println("<head><title>Ligar rele");
-  client.println("</title></head>\r \n");
-  client.println("<body> <br><br><center>\r \n");
-  client.println("<H1> LIGANDO RELE</H1>\r \n");
-  client.println("<form action=\"LG\" method=\"get\"><button style='background-color: green; border-color: green; color:  white' type='submit'>Ligar</button></form><br /><form action=\"DL\" method=\"get\"><button type='submit' style='background-color: red; border-color: red; color: white'>Desligar</button></form>\r \n");
-  client.println("</center></body></html>\r \n");
+    "\r\n"
+    "\r \n"
+    "\r \n"
+    "<!DOCTYPE HTML><html>\r \n"
+    "<head><title>Ligar rele"
+    "</title></head>\r \n"
+    "<body> <br><br><center>\r \n"
+    "<H1> LIGANDO RELE</H1>\r \n"
+    "<form action=\"LG\" method=\"get\"><button style='background-color: green; padding: 10px 10px 10px 10px; border-color: green; color:  white' type='submit'>Ligar</button></form><br /><form action=\"DL\" method=\"get\"><button type='submit' style='background-color: red; border-color: red; padding: 10px 10px 10px 10px; color: white'>Desligar</button></form>\r \n"
+    "</center></body></html>\r \n"));
   client.println();
   
 }
